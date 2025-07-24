@@ -11,7 +11,15 @@ class VerifyCsrfToken extends Middleware
      *
      * @var array<int, string>
      */
-    protected $except = [
-        //
+  
+     protected $except = [
+        '/login',
+        '/logout',
+        'property-delete/*', // Agar logout par bhi issue aa raha hai
+         'news-delete/*',
+         'rental-delete/*',
+       
     ];
+   
+    
 }
