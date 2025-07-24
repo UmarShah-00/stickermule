@@ -50,5 +50,11 @@ Route::middleware('auth')->group(function () {
   //List Stickers
   Route::get('/stickers/list', [StickerController::class, 'stickerlist'])->name('sticker.list');
 
+  //Edit Stickers
+  Route::get('/stickers/edit/{id}', [StickerController::class, 'edit'])->name('sticker.edit');
+  
+  //Update Sticker
+  Route::post('/stickers/update/{id}', [StickerController::class, 'update'])->name('sticker.update');
+
 
 });
