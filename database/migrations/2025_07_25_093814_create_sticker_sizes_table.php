@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stickers', function (Blueprint $table) {
+        Schema::create('sticker_sizes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->string('image')->nullable();
-            $table->string('background_image')->nullable();
+            $table->foreignId('sticker_id')->constrained()->onDelete('cascade');
+            $table->float('width');
+            $table->float('height');
+            $table->string('label')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stickers');
+        Schema::dropIfExists('sticker_sizes');
     }
 };

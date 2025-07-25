@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stickers', function (Blueprint $table) {
+        Schema::create('sticker_prices', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->string('image')->nullable();
-            $table->string('background_image')->nullable();
+            $table->foreignId('sticker_size_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity');
+            $table->decimal('price', 8, 2);
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stickers');
+        Schema::dropIfExists('sticker_prices');
     }
 };

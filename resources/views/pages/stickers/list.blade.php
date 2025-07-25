@@ -57,10 +57,10 @@
                     <table id="datatable" class="table table-bordered text-nowrap w-100">
                         <thead>
                             <tr>
-                                <th>Sr.</th>
+                                <th>#</th>
                                 <th>Name</th>
                                 <th>Type</th>
-                                <th>Image</th>
+                                <th>Sticker</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -106,15 +106,19 @@
                     name: 'type'
                 },
                 {
-    data: 'image',
-    name: 'image',
-    render: function(data) {
-        if (!data) return 'No Image';
-        return `<img src="/storage/${data}" alt="Sticker" height="50" style="object-fit: contain;" />`;
-    }
-},
+                    data: 'image',
+                    name: 'image',
+                   render: function(data) {
+    if (!data) return 'N/A';
+    return `
+        <div style="text-align: center;">
+            <img src="/storage/${data}" alt="Sticker" style="width: 60px; height: 30px; object-fit: contain;" />
+        </div>
+    `;
+}
 
-                 {
+                },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false,
@@ -126,27 +130,73 @@
 </script>
 
 <!-- SweetAlert for Success/Error Flash Messages -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     @if(session('success'))
-    Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: '{{ session('
-        success ') }}',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'OK'
-    });
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
     @endif
 
     @if(session('error'))
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: '{{ session('
-        error ') }}',
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'OK'
-    });
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK'
+        });
     @endif
 </script>
+
+<!-- Delete Record -->
+
+<script>
+    $(document).on('click', '.delete', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/sticker/delete/' + id,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        Swal.fire(
+                            'Deleted!',
+                            response.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire(
+                            'Error!',
+                            'Failed to delete record.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+</script>
+
 @endsection

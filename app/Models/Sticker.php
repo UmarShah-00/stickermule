@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Sticker extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'type', 'description', 'image'];
+    protected $fillable = ['name', 'title', 'slug', 'description', 'image', 'background'];
+
+    public function sizes()
+    {
+        return $this->hasMany(StickerSize::class);
+    }
 }

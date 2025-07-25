@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function () {
   Route::get('/stickers', [StickerController::class, 'create'])->name('sticker.create');
   Route::post('/stickers', [StickerController::class, 'store'])->name('sticker.store');
 
+  //Stickers Category list
+  Route::get('stickers/category/list', [StickerController::class, 'categorylist'])->name('category.list');
+
   //List Stickers
   Route::get('/stickers/list', [StickerController::class, 'stickerlist'])->name('sticker.list');
 
@@ -55,6 +58,10 @@ Route::middleware('auth')->group(function () {
   
   //Update Sticker
   Route::post('/stickers/update/{id}', [StickerController::class, 'update'])->name('sticker.update');
+
+  //Delete Sticker
+  Route::delete('/sticker/delete/{id}', [StickerController::class, 'destroy'])->name('records.destroy');
+
 
 
 });
